@@ -1,11 +1,21 @@
-import React from 'react';
-import { useFormik } from 'formik';
+import { useContext, useState, useEffect } from 'react';
 import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 
-import {Container, Row, Col, Button, Form } from 'react-bootstrap';
 import Instance from '../axios';
+import AuthContext from '../context/AuthContext';
+
+import {Container, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 
 export const Login = () => {
+  const navigate = useNavigate();
+
+  const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const { auth, handleAuth } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -16,22 +26,31 @@ export const Login = () => {
       password: Yup.string().min(6, 'Debe tener minimo 6 caracteres').required('Required'),
     }),
     onSubmit: values => {
-      //alert(JSON.stringify(values, null, 2));
-      console.log(values);
+      setErrors(false);
       onSubmitForm(values);
     },
   });
 
   const onSubmitForm = async(data) => {
     try {
+      setLoading(true);
       const response = await Instance.post('/auth/login', data);
-      const token = response.data.token;
-      localStorage.setItem('x-token', token);
-      console.log(response.data);
+      const auth = response.data;
+      handleAuth(auth);
+      setLoading(false);
      } catch (error) {
       console.log(error);
+      let errorMsg = error.response.data.msg || 'Error al iniciar sesión';
+      setErrors(errorMsg);
+      setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (auth) {
+      navigate('/');
+    }
+  }, [auth, navigate]);  
 
   return (
     <Container>
@@ -69,8 +88,17 @@ export const Login = () => {
               ) : null}
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            { errors &&
+              <div className='text-danger fs-6 fw-bold mb-2'>
+                {errors}
+              </div>
+            }
+
+            <Button className='d-flex align-items-center gap-2'  variant="primary" type="submit">
               Enviar
+              <Spinner className={!loading ? 'd-none' : ''} animation="border" role="status" size="sm">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
             </Button>
           </Form>
         </Col>
