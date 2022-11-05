@@ -15,7 +15,11 @@ export const Header = () => {
         <Navbar.Brand>Omega PetShop</Navbar.Brand>
         <Nav className="me-auto">
           <Link to="/" className="text-dark text-decoration-none me-3">Home</Link>
-          <Link to="/store" className="text-dark text-decoration-none me-3">Tienda</Link>          
+          {/* <Link to="/store" className="text-dark text-decoration-none me-3">Tienda</Link> */}
+          {
+            auth && user.role ==='ADMIN_ROLE' &&
+            <Link to="/admin" className="text-dark text-decoration-none me-3">Admin</Link>
+          }      
         </Nav>
         { auth ?
           <div className="d-flex align-items-center gap-2 fs-6">

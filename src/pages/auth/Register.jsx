@@ -2,9 +2,9 @@ import { useContext, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
 
 import Instance from '../../axios';
+import { popUpSuccess } from '../../utils';
 import AuthContext from '../../context/AuthContext';
 
 import {Container, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
@@ -60,7 +60,7 @@ export const Register = () => {
       setLoading(true);
       await Instance.post('/users', data);
       formik.resetForm();
-      const ok = userCreate();
+      const ok = popUpSuccess('Usuaria creado');;
       if (ok) navigate('/login');      
       setLoading(false);
      } catch (error) {
@@ -69,17 +69,6 @@ export const Register = () => {
       setLoading(false);
     }
   }
-
-  const userCreate = () => {
-    const resp = Swal.fire({
-      title: 'Usuario creado',
-      icon: 'success',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'Iniciar sesión'
-    });
-    
-    return resp;
-  } 
 
   return (
     <Container>
