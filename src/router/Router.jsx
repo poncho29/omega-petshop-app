@@ -1,10 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Home } from '../pages/Home';
-import { Store } from '../pages/Store';
-import { Header } from '../components/Header';
-import { Login } from '../pages/Login';
+import { Header } from '../components';
+import { Home, Store } from '../pages';
+import { Login, Register } from '../pages/auth';
 
 export const Router = () => {
   return (
@@ -15,6 +14,7 @@ export const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="store" element={<Store />} />
         <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
       </Routes>
     </>
   )

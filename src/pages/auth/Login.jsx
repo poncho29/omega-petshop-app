@@ -3,8 +3,8 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
-import Instance from '../axios';
-import AuthContext from '../context/AuthContext';
+import Instance from '../../axios';
+import AuthContext from '../../context/AuthContext';
 
 import {Container, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 
@@ -14,7 +14,7 @@ export const Login = () => {
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { auth, handleAuth } = useContext(AuthContext);
+  const { auth, login } = useContext(AuthContext);
 
   const formik = useFormik({
     initialValues: {
@@ -36,7 +36,7 @@ export const Login = () => {
       setLoading(true);
       const response = await Instance.post('/auth/login', data);
       const auth = response.data;
-      handleAuth(auth);
+      login(auth);
       setLoading(false);
      } catch (error) {
       console.log(error);
@@ -46,11 +46,12 @@ export const Login = () => {
     }
   }
 
+  // Si esta loggueado lo saca del login
   useEffect(() => {
     if (auth) {
       navigate('/');
     }
-  }, [auth, navigate]);  
+  }, [auth, navigate]);
 
   return (
     <Container>
