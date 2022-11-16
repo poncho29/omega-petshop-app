@@ -22,7 +22,7 @@ export const Admin = () => {
       try {
         setLoading(true);
         const { data } = await Instance.get('/products');
-        console.log(data);
+        // console.log(data);
         setProducts(data.products);
         setLoading(false);
       } catch (error) {
@@ -47,7 +47,8 @@ export const Admin = () => {
     
     try {
       await Instance.delete(`/products/${id}`);
-      await await popUpSuccess('Producto eliminado');
+      await popUpSuccess('Producto eliminado');
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
