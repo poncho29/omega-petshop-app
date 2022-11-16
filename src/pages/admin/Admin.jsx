@@ -104,7 +104,7 @@ export const Admin = () => {
               <tr>
                 <td className="text-center align-middle" style={{ height: '200px' }} colSpan={7}>
                   <Spinner animation="grow" role="status" size="lg">
-                    <span className="visually-hidden">Loading...</span>
+                    <span className="visually-hidden">Loading..</span>
                   </Spinner>
                 </td>
               </tr>
